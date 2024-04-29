@@ -1,0 +1,13 @@
+logs
+*.log
+npm-debug.log*
+node_modules/
+.npm
+.eslintcache
+.env
+*.js.map
+.npmrc
+package-lock.json
+pnpm-lock.yaml
+bun.lockb
+dist/dev

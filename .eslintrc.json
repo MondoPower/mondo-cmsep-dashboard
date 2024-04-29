@@ -1,0 +1,7 @@
+{
+  "extends": ["@finsweet"],
+  "rules": {
+    "no-console": "off",
+    "simple-import-sort/imports": "off"
+  }
+}
