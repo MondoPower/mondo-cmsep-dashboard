@@ -8,7 +8,7 @@ import './dev/debug';
 import './dev/env';
 
 const LOCALHOST_BASE = 'http://localhost:3000/';
-const PRODUCTION_BASE = 'https://cdn.jsdelivr.net/gh/igniteagency/{{repo}}/dist/prod/';
+const PRODUCTION_BASE = 'https://cdn.jsdelivr.net/gh/igniteagency/mondo-cmsep-dashboard/dist/prod/';
 
 window.JS_SCRIPTS = new Set();
 

@@ -1,6 +1,6 @@
-# Webflow JS Starter
+# Mondo CMSEP dashboard
 
-This GitHub project provides a development workflow for JavaScript files in Webflow JS Starter.
+This GitHub project provides a development workflow for JavaScript files in Mondo CMSEP dashboard.
 
 In essence, it uses bun to start a development server on [localhost:3000](http://localhost:3000), bundle, build and serve any working file (from the `/src` directory) in local mode. Once pushed up and merged into `main`, it's auto-tagged with the latest semver tag version, and the production code will be auto-loaded from [jsDelivr CDN](https://www.jsdelivr.com/).
 
@@ -30,7 +30,7 @@ The project will process and output the files mentioned in the `files` const of 
 1. The initial `entry.js` file needs to be made available via external server first for this system to work (in the `<head>` area of the site).
 
    ```html
-   <script src="https://cdn.jsdelivr.net/gh/igniteagency/{{repo}}/dist/prod/entry.js"></script>
+   <script src="https://cdn.jsdelivr.net/gh/igniteagency/mondo-cmsep-dashboard/dist/prod/entry.js"></script>
    ```
 
    For occasional localhost testing when editing `entry.js`, you'll have to manually include that script like following:
