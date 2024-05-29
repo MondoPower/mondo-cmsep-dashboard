@@ -83,15 +83,19 @@ You can use that as following:
 There is an opt-in debugging setup that turns on logs in the console. The preference can be toggled via browser console, and is stored in browser localStorage.
 
 - Add any console logs in the code using the `window.DEBUG` function. It's a `console.log` wrapper. There is also a `window.IS_DEBUG_MODE` variable to run code conditions on
-- Execute `window.setDebugMode(true)` in the console to turn on Debug mode. After reload, the console will start showing code logs.
+- Execute `window.setDebugMode(true)` in the console to turn on Debug mode. After reload, the console will start showing code logs. It is off by default.
 - To turn it off, execute `window.setDebugMode(false)` in the console.
 
 ### Production
 
 1. Run `bun run build` to generate the production files in `./dist` folder
+   - Alternatively, `pnpm run build` or `npm run build`
 
 2. To push code to production, merge the working branch into `main`. A Github Actions workflow will run tagging that version with an incremented [semver](https://semver.org/)) tag. Once pushed, the production code will be auto loaded from [jsDelivr CDN](https://www.jsdelivr.net/).
-   - By default, the version bump is a patch (`x.y.{{patch number}}`). To bump the version by a higher amount, mention a tag in the commit message, like `#major` or `#minor`
+   - By default, the version bump is a patch (`x.y.{{patch number}}`). To bump the version by a higher amount, mention a tag in the merge commit message, like `#major` or `#minor`
+
+3. To create separate environments for `dev` and `staging`, respective branches can be used, and the [jsDelivr file path can be set to load the latest scripts from those respective branches](https://www.jsdelivr.com/documentation#id-github). Note: The [caching for branches lasts 12 hours](https://www.jsdelivr.com/documentation#id-caching) and would hence require a manual purge.
+   - To do so, override the `window.PRODUCTION_BASE` variable in the HTML file after the inclusion of `entry.js` script.
 
 #### jsDelivr Notes & Caveats
 
