@@ -24,7 +24,7 @@ After repository migration, update the repo name and URL in this README file, an
 
 ### Output
 
-The project will process and output the files mentioned in the `files` const of `./bin/build.js` file. The output minified files will be in the `./dist/prod` folder for production (pushed to github), and in the `./dist/dev` used for local file serving.
+The project will process and output the files mentioned in the `files` const of `./bin/build.js` file. The output minified files will be in the `./dist/prod` folder for production (pushed to github), and in the `./dist/dev` used for local file serving (excluded from Git).
 
 ### Development
 
@@ -80,11 +80,11 @@ You can use that as following:
 
 #### Debugging
 
-- Add any debug console logs in the code using the `console.debug` function. This way, they can be toggled on/off using the browser native "Verbose/Debug" level.
+- Add any debug console logs in the code using the `console.debug` function instead of `console.log`. This way, they can be toggled on/off using the browser native "Verbose/Debug" level.
 
 ### Production
 
-1. Run `bun run build` to generate the production files in `./dist` folder
+1. Run `bun run build` to generate the production files in `./dist/prod` folder
    - Alternatively, `pnpm run build` or `npm run build`
 
 2. To push code to production, merge the working branch into `main`. A Github Actions workflow will run tagging that version with an incremented [semver](https://semver.org/)) tag. Once pushed, the production code will be auto loaded from [jsDelivr CDN](https://www.jsdelivr.net/).
