@@ -4,7 +4,6 @@
  * Polls `localhost` on page load, else falls back to deriving code from production URL
  */
 import { SCRIPTS_LOADED_EVENT } from './constants';
-import './dev/debug';
 import './dev/env';
 
 const LOCALHOST_BASE = 'http://localhost:3000/';
@@ -22,7 +21,7 @@ window.addEventListener('DOMContentLoaded', addJS);
  * Sets an object `window.isLocal` and adds all the set scripts using the `window.JS_SCRIPTS` Set
  */
 function addJS() {
-  console.log(`Current mode: ${window.SCRIPTS_ENV}`);
+  console.log(`Current script mode: ${window.SCRIPTS_ENV}`);
 
   if (window.SCRIPTS_ENV === 'dev') {
     fetchLocalScripts();
@@ -53,7 +52,7 @@ function appendScripts() {
   });
 
   Promise.allSettled(SCRIPT_LOAD_PROMISES).then(() => {
-    window.DEBUG('All scripts loaded');
+    console.debug('All scripts loaded');
     window.dispatchEvent(new CustomEvent(SCRIPTS_LOADED_EVENT));
   });
 }

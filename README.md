@@ -80,11 +80,7 @@ You can use that as following:
 
 #### Debugging
 
-There is an opt-in debugging setup that turns on logs in the console. The preference can be toggled via browser console, and is stored in browser localStorage.
-
-- Add any console logs in the code using the `window.DEBUG` function. It's a `console.log` wrapper. There is also a `window.IS_DEBUG_MODE` variable to run code conditions on
-- Execute `window.setDebugMode(true)` in the console to turn on Debug mode. After reload, the console will start showing code logs. It is off by default.
-- To turn it off, execute `window.setDebugMode(false)` in the console.
+- Add any debug console logs in the code using the `console.debug` function. This way, they can be toggled on/off using the browser native "Verbose/Debug" level.
 
 ### Production
 

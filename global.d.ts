@@ -10,13 +10,6 @@ declare global {
     SCRIPTS_ENV: ENV;
     setScriptsENV(env: ENV): void;
 
-    IS_DEBUG_MODE: boolean;
-    setDebugMode(mode: boolean): void;
-    /**
-     * A wrapper function to directly console log when debug mode is active
-     */
-    DEBUG: (...args: any[]) => void;
-
     PRODUCTION_BASE: string;
   }
 
