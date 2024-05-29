@@ -8,7 +8,8 @@ import './dev/debug';
 import './dev/env';
 
 const LOCALHOST_BASE = 'http://localhost:3000/';
-const PRODUCTION_BASE = 'https://cdn.jsdelivr.net/gh/igniteagency/mondo-cmsep-dashboard/dist/prod/';
+window.PRODUCTION_BASE =
+  'https://cdn.jsdelivr.net/gh/igniteagency/mondo-cmsep-dashboard/dist/prod/';
 
 window.JS_SCRIPTS = new Set();
 
@@ -31,7 +32,7 @@ function addJS() {
 }
 
 function appendScripts() {
-  const BASE = window.SCRIPTS_ENV === 'dev' ? LOCALHOST_BASE : PRODUCTION_BASE;
+  const BASE = window.SCRIPTS_ENV === 'dev' ? LOCALHOST_BASE : window.PRODUCTION_BASE;
 
   window.JS_SCRIPTS?.forEach((url) => {
     const script = document.createElement('script');
