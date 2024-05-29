@@ -4,7 +4,7 @@ window.IS_DEBUG_MODE = getDebugMode();
 
 window.DEBUG = function (...args) {
   if (window.IS_DEBUG_MODE) {
-    console.log(...args);
+    console.log.call(console, ...args);
   }
 };
 
