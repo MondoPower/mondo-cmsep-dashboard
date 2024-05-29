@@ -8,7 +8,7 @@ const production = process.env.NODE_ENV === 'production';
 
 const BUILD_DIRECTORY = !production ? DEV_BUILD_PATH : PROD_BUILD_PATH;
 
-const files = ['./src/*.ts', './src/components/**/*.ts', './src/pages/*.ts'];
+const files = ['./src/*.ts', './src/components/**/*.ts'];
 
 const buildSettings = {
   entryPoints: files,
