@@ -30,6 +30,7 @@
   },
   "dependencies": {
     "@finsweet/ts-utils": "^0.40.0",
+    "@types/alpinejs": "^3.13.10",
     "alpinejs": "^3.14.0",
     "dayjs": "^1.11.11"
   }
