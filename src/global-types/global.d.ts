@@ -3,6 +3,10 @@ import type { Webflow } from '@finsweet/ts-utils';
 export type SCRIPTS_ENV = 'dev' | 'prod';
 
 declare global {
+  const dayjs: typeof import('dayjs');
+}
+
+declare global {
   interface Window {
     JS_SCRIPTS: Set<string> | undefined;
     Webflow: Webflow;
