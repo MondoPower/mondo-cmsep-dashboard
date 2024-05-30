@@ -15,6 +15,11 @@ declare global {
     setScriptsENV(env: ENV): void;
 
     PRODUCTION_BASE: string;
+
+    /**
+     * window.townName to be defined in HTML that determines the town data fetch endpoint
+     */
+    townName: string;
   }
 
   // Extend `querySelector` and `querySelectorAll` function to stop the nagging of converting `Element` to `HTMLElement` all the time
