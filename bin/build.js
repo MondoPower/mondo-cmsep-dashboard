@@ -8,7 +8,7 @@ const production = process.env.NODE_ENV === 'production';
 
 const BUILD_DIRECTORY = !production ? DEV_BUILD_PATH : PROD_BUILD_PATH;
 
-const files = ['./src/*.ts', './src/components/**/*.ts', './src/utils/alpineWebflow.ts'];
+const files = ['./src/*.ts', './src/api/*.ts', './src/ui/*.ts', './src/utils/alpineWebflow.ts'];
 
 const buildSettings = {
   entryPoints: files,

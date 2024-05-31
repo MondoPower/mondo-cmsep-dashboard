@@ -12,11 +12,17 @@ interface StatsComponent {
 
   numberOfSystems: string;
 
-  status: string;
-  statusText: string;
-  isExporting: () => boolean;
-  isPreEventResilience: () => boolean;
-  isResilience: () => boolean;
+  isExporting: boolean;
+  isPreStormResilience: boolean;
+  isResilience: boolean;
+
+  gridExportCount: string;
+
+  isGridConnected: boolean;
+  isIslanded: boolean;
+
+  solarGenerating: string;
+  solarCapacity: string;
 
   batteryCapacity: string;
   batteryChargeState: string;
@@ -38,7 +44,26 @@ interface StatsComponent {
 window.addEventListener('alpine:init', () => {
   window.Alpine.data(COMPONENT_NAME, function () {
     return {
+      // Setting defaults
       townName: '',
+      lastUpdated: '',
+
+      numberOfSystems: '',
+
+      isExporting: false,
+      isPreStormResilience: false,
+      isResilience: false,
+
+      gridExportCount: '',
+
+      isGridConnected: false,
+      isIslanded: false,
+
+      solarGenerating: '',
+      solarCapacity: '',
+
+      batteryCapacity: '',
+      batteryChargeState: '',
 
       init() {
         this.queryData();
