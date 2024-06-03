@@ -3,8 +3,8 @@ import type { CustomAlpineComponent } from 'src/global-types/alpine-component';
 
 const COMPONENT_NAME = 'stats';
 
-const DATA_ENDPOINT = `http://backend.cmsep.mondopower.com.au/${townName}.json`;
-const POLL_TIME_MS = 5000;
+const DATA_ENDPOINT = `https://cmsep-backend.mondopower.com.au/${townName}.json`;
+const POLL_TIME_MS = 60000;
 
 interface StatsComponent {
   townName: string;
