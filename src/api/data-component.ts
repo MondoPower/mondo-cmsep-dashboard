@@ -1,4 +1,4 @@
-import type { CustomAlpineComponent } from 'src/global-types/alpine-component';
+import type { CustomAlpineComponent } from 'src/types/alpine-component';
 
 const COMPONENT_NAME = 'stats';
 
