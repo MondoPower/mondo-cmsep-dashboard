@@ -1,10 +1,9 @@
-import { Dayjs } from 'dayjs';
 import type { CustomAlpineComponent } from 'src/global-types/alpine-component';
 
 const COMPONENT_NAME = 'stats';
 
 const DATA_ENDPOINT = `https://cmsep-backend.mondopower.com.au/${townName}.json`;
-const POLL_TIME_MS = 60000;
+const POLL_TIME_MS = 1 * 60 * 1000; // 1 minute
 
 interface StatsComponent {
   townName: string;
@@ -23,9 +22,11 @@ interface StatsComponent {
 
   solarGenerating: string;
   solarCapacity: string;
+  solarGeneratingPercent: number;
 
-  batteryCapacity: string;
   batteryChargeState: string;
+  batteryCapacity: string;
+  batteryChargePercent: number;
 
   /**
    * Alpine lifecycle function
@@ -61,9 +62,11 @@ window.addEventListener('alpine:init', () => {
 
       solarGenerating: '',
       solarCapacity: '',
+      solarGeneratingPercent: 0,
 
-      batteryCapacity: '',
       batteryChargeState: '',
+      batteryCapacity: '',
+      batteryChargePercent: 0,
 
       init() {
         this.queryData();
@@ -73,9 +76,34 @@ window.addEventListener('alpine:init', () => {
       async queryData() {
         try {
           const response = await fetch(DATA_ENDPOINT);
-          const data = await response.json();
+          const data = (await response.json()) as APIResponse;
 
-          console.debug('Data fetched', data);
+          console.debug('API Data fetched', data);
+
+          this.townName = data.townName;
+          this.lastUpdated = dayjs().to(data.timestamp);
+          console.log(dayjs().to(data.timestamp));
+
+          this.numberOfSystems = data.numberOfSystems.toString();
+
+          this.isExporting = data.status === 'Exporting';
+          this.isPreStormResilience = data.status === 'Pre-event resilience mode - charging';
+          this.isResilience = data.status === 'Resilience mode - conserve energy';
+
+          this.gridExportCount = data.exportingToGrid.value + data.exportingToGrid.unit;
+
+          this.isGridConnected = data.townSupplyStatus === 'Grid connected';
+          this.isIslanded = data.townSupplyStatus === 'Islanded';
+
+          this.solarGenerating = data.solar.generating.value + data.solar.generating.unit;
+          this.solarCapacity = data.solar.capacity.value + data.solar.capacity.unit;
+          this.solarGeneratingPercent =
+            (data.solar.generating.value / data.solar.capacity.value) * 100;
+
+          this.batteryChargeState =
+            data.batteries.stateOfCharge.value + data.batteries.stateOfCharge.unit;
+          this.batteryCapacity = data.batteries.capacity.value + data.batteries.capacity.unit;
+          this.batteryChargePercent = data.batteries.stateOfCharge.value;
         } catch (error) {
           console.error('Error in fetching the data', error);
         }
