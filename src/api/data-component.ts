@@ -81,8 +81,8 @@ window.addEventListener('alpine:init', () => {
           console.debug('API Data fetched', data);
 
           this.townName = data.townName;
-          this.lastUpdated = dayjs().to(data.timestamp);
-          console.log(dayjs().to(data.timestamp));
+          this.lastUpdated = dayjs().tz().to(data.timestamp);
+          console.log(dayjs().tz().to(data.timestamp));
 
           this.numberOfSystems = data.numberOfSystems.toString();
 
