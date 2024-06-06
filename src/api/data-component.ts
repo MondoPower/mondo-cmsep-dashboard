@@ -29,6 +29,11 @@ interface StatsComponent {
   batteryChargePercent: number;
 
   /**
+   * Flag to indicate if there was an API error
+   */
+  isError: boolean;
+
+  /**
    * Alpine lifecycle function
    */
   init(): void;
@@ -42,12 +47,12 @@ interface StatsComponent {
   initPolling(): void;
 }
 
-window.addEventListener('alpine:init', () => {
+document.addEventListener('alpine:init', () => {
   window.Alpine.data(COMPONENT_NAME, function () {
     return {
       // Setting defaults
       townName: '',
-      lastUpdated: '',
+      lastUpdated: dayjs().tz().fromNow(),
 
       numberOfSystems: '',
 
@@ -68,6 +73,8 @@ window.addEventListener('alpine:init', () => {
       batteryCapacity: '',
       batteryChargePercent: 0,
 
+      isError: false,
+
       init() {
         this.queryData();
         this.initPolling();
@@ -78,11 +85,13 @@ window.addEventListener('alpine:init', () => {
           const response = await fetch(DATA_ENDPOINT);
           const data = (await response.json()) as APIResponse;
 
+          this.isError = false;
+
           console.debug('API Data fetched', data);
 
           this.townName = data.townName;
-          this.lastUpdated = dayjs().to(data.timestamp);
-          console.log(dayjs().to(data.timestamp));
+
+          this.lastUpdated = dayjs().tz().to(data.timestamp);
 
           this.numberOfSystems = data.numberOfSystems.toString();
 
@@ -105,14 +114,18 @@ window.addEventListener('alpine:init', () => {
           this.batteryCapacity = data.batteries.capacity.value + data.batteries.capacity.unit;
           this.batteryChargePercent = data.batteries.stateOfCharge.value;
         } catch (error) {
+          this.isError = true;
           console.error('Error in fetching the data', error);
         }
       },
 
       initPolling() {
         try {
-          setInterval(this.queryData, POLL_TIME_MS);
+          setInterval(() => {
+            this.queryData();
+          }, POLL_TIME_MS);
         } catch (error) {
+          this.isError = true;
           console.error('Error in polling the data', error);
         }
       },
