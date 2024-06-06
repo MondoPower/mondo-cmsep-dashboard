@@ -47,7 +47,7 @@ interface StatsComponent {
   initPolling(): void;
 }
 
-window.addEventListener('alpine:init', () => {
+document.addEventListener('alpine:init', () => {
   window.Alpine.data(COMPONENT_NAME, function () {
     return {
       // Setting defaults
@@ -90,8 +90,8 @@ window.addEventListener('alpine:init', () => {
           console.debug('API Data fetched', data);
 
           this.townName = data.townName;
+
           this.lastUpdated = dayjs().tz().to(data.timestamp);
-          console.log(dayjs().tz().to(data.timestamp));
 
           this.numberOfSystems = data.numberOfSystems.toString();
 
@@ -121,7 +121,9 @@ window.addEventListener('alpine:init', () => {
 
       initPolling() {
         try {
-          setInterval(this.queryData, POLL_TIME_MS);
+          setInterval(() => {
+            this.queryData();
+          }, POLL_TIME_MS);
         } catch (error) {
           this.isError = true;
           console.error('Error in polling the data', error);
