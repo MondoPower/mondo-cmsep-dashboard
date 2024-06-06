@@ -52,7 +52,7 @@ window.addEventListener('alpine:init', () => {
     return {
       // Setting defaults
       townName: '',
-      lastUpdated: '',
+      lastUpdated: dayjs().tz().fromNow(),
 
       numberOfSystems: '',
 
