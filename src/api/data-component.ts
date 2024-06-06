@@ -29,6 +29,11 @@ interface StatsComponent {
   batteryChargePercent: number;
 
   /**
+   * Flag to indicate if there was an API error
+   */
+  isError: boolean;
+
+  /**
    * Alpine lifecycle function
    */
   init(): void;
@@ -68,6 +73,8 @@ window.addEventListener('alpine:init', () => {
       batteryCapacity: '',
       batteryChargePercent: 0,
 
+      isError: false,
+
       init() {
         this.queryData();
         this.initPolling();
@@ -77,6 +84,8 @@ window.addEventListener('alpine:init', () => {
         try {
           const response = await fetch(DATA_ENDPOINT);
           const data = (await response.json()) as APIResponse;
+
+          this.isError = false;
 
           console.debug('API Data fetched', data);
 
@@ -105,6 +114,7 @@ window.addEventListener('alpine:init', () => {
           this.batteryCapacity = data.batteries.capacity.value + data.batteries.capacity.unit;
           this.batteryChargePercent = data.batteries.stateOfCharge.value;
         } catch (error) {
+          this.isError = true;
           console.error('Error in fetching the data', error);
         }
       },
@@ -113,6 +123,7 @@ window.addEventListener('alpine:init', () => {
         try {
           setInterval(this.queryData, POLL_TIME_MS);
         } catch (error) {
+          this.isError = true;
           console.error('Error in polling the data', error);
         }
       },
