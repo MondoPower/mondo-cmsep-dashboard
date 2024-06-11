@@ -28,7 +28,7 @@ interface APIResponse {
   };
   status:
     | 'Exporting'
-    | 'Pre-event resilience mode - charging'
-    | 'Resilience mode - conserve energy';
+    | 'Pre-event resilience mode – charging'
+    | 'Resilience mode – conserve energy';
   townSupplyStatus: 'Grid connected' | 'Islanded';
 }

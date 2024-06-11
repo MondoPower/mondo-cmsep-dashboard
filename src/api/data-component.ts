@@ -96,8 +96,8 @@ document.addEventListener('alpine:init', () => {
           this.numberOfSystems = data.numberOfSystems.toString();
 
           this.isExporting = data.status === 'Exporting';
-          this.isPreStormResilience = data.status === 'Pre-event resilience mode - charging';
-          this.isResilience = data.status === 'Resilience mode - conserve energy';
+          this.isPreStormResilience = data.status === 'Pre-event resilience mode – charging';
+          this.isResilience = data.status === 'Resilience mode – conserve energy';
 
           this.gridExportCount = data.exportingToGrid.value + data.exportingToGrid.unit;
 
