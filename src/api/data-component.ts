@@ -160,7 +160,12 @@ document.addEventListener('alpine:init', () => {
       },
 
       hidePopover() {
-        this.$el.querySelector('[popover]')?.hidePopover();
+        if (this.$el.getAttribute('x-ref') === 'popoverCloseIcon') {
+          // trigger is the mobile popover close icon
+          this.$el.closest('[popover]')?.hidePopover();
+        } else {
+          this.$el.querySelector('[popover]')?.hidePopover();
+        }
       },
     } as CustomAlpineComponent<StatsComponent>;
   });
