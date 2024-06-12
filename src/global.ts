@@ -4,8 +4,6 @@ import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
 import 'src/api/data-component';
 
-import { initModalInteraction } from './ui/info-modals';
-
 // put dayjs in the global scope
 globalThis.dayjs = dayjs;
 
@@ -16,6 +14,4 @@ window.Webflow?.push(() => {
 
   // set default dayjs timezone as victoria australia
   dayjs.tz.setDefault('Australia/Victoria');
-
-  initModalInteraction();
 });

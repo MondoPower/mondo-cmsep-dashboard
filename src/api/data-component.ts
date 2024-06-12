@@ -45,6 +45,14 @@ interface StatsComponent {
    * Re-query data every set interval
    */
   initPolling(): void;
+  /**
+   * Toggle the info popover
+   */
+  showPopover(): void;
+  /**
+   * Hide the info popover
+   */
+  hidePopover(): void;
 }
 
 document.addEventListener('alpine:init', () => {
@@ -128,6 +136,31 @@ document.addEventListener('alpine:init', () => {
           this.isError = true;
           console.error('Error in polling the data', error);
         }
+      },
+
+      showPopover() {
+        const popoverEl = this.$el.querySelector('[popover]');
+        if (!popoverEl) {
+          return;
+        }
+
+        if (window.innerWidth > 991) {
+          // Position the popover on desktop
+          const { top, left } = this.$el.getBoundingClientRect();
+          const calcTopEdge = top;
+          const calcLeftEdge = left - 600; // 500px = arbitrary width of the info element + gap
+
+          Object.assign(popoverEl.style, {
+            left: `${calcLeftEdge}px`,
+            top: `${calcTopEdge}px`,
+          });
+        }
+
+        popoverEl.showPopover();
+      },
+
+      hidePopover() {
+        this.$el.querySelector('[popover]')?.hidePopover();
       },
     } as CustomAlpineComponent<StatsComponent>;
   });
