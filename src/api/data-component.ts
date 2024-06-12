@@ -148,7 +148,10 @@ document.addEventListener('alpine:init', () => {
           // Position the popover on desktop
           const { top, left } = this.$el.getBoundingClientRect();
           const calcTopEdge = top;
-          const calcLeftEdge = left - 600; // 500px = arbitrary width of the info element + gap
+          let calcLeftEdge = left - 600; // 500px = arbitrary width of the info element + gap
+          if (calcLeftEdge < 0) {
+            calcLeftEdge = 15;
+          }
 
           Object.assign(popoverEl.style, {
             left: `${calcLeftEdge}px`,
