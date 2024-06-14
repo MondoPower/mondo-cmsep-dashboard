@@ -3,7 +3,6 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
-import 'src/api/data-component';
 
 // put dayjs in the global scope
 globalThis.dayjs = dayjs;
