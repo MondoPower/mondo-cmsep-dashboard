@@ -1,50 +1,56 @@
 import type { CustomAlpineComponent } from '$types/alpine-component';
 
 const COMPONENT_NAME = 'statItem';
+const INFO_ACTIVE_CLASS = 'is-info-active';
 
 interface StatsItemComponent {
-  /** Toggle the info popover */
-  showPopover(): void;
-  /** Hide the info popover */
-  hidePopover(): void;
   /** Whether info mode is active on tablet and below */
   isInfoMode: boolean;
+  itemAttr: object;
+  /** Desktop tooltip trigger element listeners */
+  desktopTooltipTriggerAttr: object;
+  /** Tablet info trigger element listeners */
+  tabletInfoTriggerAttr: object;
+  /** Toggles the popover element */
+  showPopover: boolean;
 }
 
 document.addEventListener('alpine:init', () => {
   window.Alpine.data(COMPONENT_NAME, function () {
     return {
-      showPopover() {
-        const popoverEl = this.$el.querySelector('[popover]');
-        if (!popoverEl) {
-          return;
-        }
+      // defaults
+      isInfoMode: false,
+      showPopover: false,
 
-        if (window.innerWidth > 991) {
-          // Position the popover on desktop
-          const { top, left } = this.$el.getBoundingClientRect();
-          const calcTopEdge = top;
-          let calcLeftEdge = left - 600; // 500px = arbitrary width of the info element + gap
-          if (calcLeftEdge < 0) {
-            calcLeftEdge = 15;
-          }
-
-          Object.assign(popoverEl.style, {
-            left: `${calcLeftEdge}px`,
-            top: `${calcTopEdge}px`,
-          });
-        }
-
-        popoverEl.showPopover();
+      itemAttr: {
+        [':class']() {
+          return this.isInfoMode && INFO_ACTIVE_CLASS;
+        },
       },
 
-      hidePopover() {
-        if (this.$el.getAttribute('x-ref') === 'popoverCloseIcon') {
-          // trigger is the mobile popover close icon
-          this.$el.closest('[popover]')?.hidePopover();
-        } else {
-          this.$el.querySelector('[popover]')?.hidePopover();
-        }
+      desktopTooltipTriggerAttr: {
+        ['tabindex']: '0',
+        ['@mouseenter']() {
+          this.showPopover = true;
+        },
+        ['@mouseleave']() {
+          this.showPopover = false;
+        },
+        ['@focus']() {
+          this.showPopover = true;
+        },
+        ['@blur']() {
+          this.showPopover = false;
+        },
+        ['@keyup.escape']() {
+          this.showPopover = false;
+        },
+      },
+
+      tabletInfoTriggerAttr: {
+        ['@click']() {
+          this.isInfoMode = !this.isInfoMode;
+        },
       },
     } as CustomAlpineComponent<StatsItemComponent>;
   });
