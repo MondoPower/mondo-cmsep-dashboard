@@ -5,7 +5,9 @@
     "rootDir": "./src",
     "baseUrl": "./",
     "paths": {
-      "$utils/*": ["src/utils/*"]
+      "$utils/*": ["src/utils/*"],
+      "$types/*": ["src/types/*"],
+      "$ui_components/*": ["src/ui-components/*"]
     }
   }
 }

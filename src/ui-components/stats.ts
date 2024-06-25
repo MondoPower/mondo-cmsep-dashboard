@@ -1,4 +1,4 @@
-import type { CustomAlpineComponent } from 'src/types/alpine-component';
+import type { CustomAlpineComponent } from '$types/alpine-component';
 
 const COMPONENT_NAME = 'stats';
 
@@ -28,31 +28,15 @@ interface StatsComponent {
   batteryCapacity: string;
   batteryChargePercent: number;
 
-  /**
-   * Flag to indicate if there was an API error
-   */
+  /** Flag to indicate if there was an API error */
   isError: boolean;
 
-  /**
-   * Alpine lifecycle function
-   */
+  /** Alpine lifecycle function */
   init(): void;
-  /**
-   * Fetch the town data from the set endpoint, and assign it to the respective component properties
-   */
+  /** Fetch the town data from the set endpoint, and assign it to the respective component properties */
   queryData(): Promise<void>;
-  /**
-   * Re-query data every set interval
-   */
+  /** Re-query data every set interval */
   initPolling(): void;
-  /**
-   * Toggle the info popover
-   */
-  showPopover(): void;
-  /**
-   * Hide the info popover
-   */
-  hidePopover(): void;
 }
 
 document.addEventListener('alpine:init', () => {
@@ -135,39 +119,6 @@ document.addEventListener('alpine:init', () => {
         } catch (error) {
           this.isError = true;
           console.error('Error in polling the data', error);
-        }
-      },
-
-      showPopover() {
-        const popoverEl = this.$el.querySelector('[popover]');
-        if (!popoverEl) {
-          return;
-        }
-
-        if (window.innerWidth > 991) {
-          // Position the popover on desktop
-          const { top, left } = this.$el.getBoundingClientRect();
-          const calcTopEdge = top;
-          let calcLeftEdge = left - 600; // 500px = arbitrary width of the info element + gap
-          if (calcLeftEdge < 0) {
-            calcLeftEdge = 15;
-          }
-
-          Object.assign(popoverEl.style, {
-            left: `${calcLeftEdge}px`,
-            top: `${calcTopEdge}px`,
-          });
-        }
-
-        popoverEl.showPopover();
-      },
-
-      hidePopover() {
-        if (this.$el.getAttribute('x-ref') === 'popoverCloseIcon') {
-          // trigger is the mobile popover close icon
-          this.$el.closest('[popover]')?.hidePopover();
-        } else {
-          this.$el.querySelector('[popover]')?.hidePopover();
         }
       },
     } as CustomAlpineComponent<StatsComponent>;
