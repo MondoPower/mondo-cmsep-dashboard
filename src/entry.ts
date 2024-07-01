@@ -53,7 +53,10 @@ function appendScripts() {
 
   Promise.allSettled(SCRIPT_LOAD_PROMISES).then(() => {
     console.debug('All scripts loaded');
-    window.dispatchEvent(new CustomEvent(SCRIPTS_LOADED_EVENT));
+    // Add a small delay to ensure all scripts have had a chance to execute
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent(SCRIPTS_LOADED_EVENT));
+    }, 50);
   });
 }
 
