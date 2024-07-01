@@ -15,45 +15,43 @@ interface StatsItemComponent {
   showPopover: boolean;
 }
 
-export function initStatsItemComponent() {
-  document.addEventListener('alpine:init', () => {
-    window.Alpine.data(COMPONENT_NAME, function () {
-      return {
-        // defaults
-        isInfoMode: false,
-        showPopover: false,
+document.addEventListener('alpine:init', () => {
+  window.Alpine.data(COMPONENT_NAME, function () {
+    return {
+      // defaults
+      isInfoMode: false,
+      showPopover: false,
 
-        itemAttr: {
-          [':class']() {
-            return this.isInfoMode && INFO_ACTIVE_CLASS;
-          },
+      itemAttr: {
+        [':class']() {
+          return this.isInfoMode && INFO_ACTIVE_CLASS;
         },
+      },
 
-        desktopTooltipTriggerAttr: {
-          ['tabindex']: '0',
-          ['@mouseenter']() {
-            this.showPopover = true;
-          },
-          ['@mouseleave']() {
-            this.showPopover = false;
-          },
-          ['@focus']() {
-            this.showPopover = true;
-          },
-          ['@blur']() {
-            this.showPopover = false;
-          },
-          ['@keyup.escape']() {
-            this.showPopover = false;
-          },
+      desktopTooltipTriggerAttr: {
+        ['tabindex']: '0',
+        ['@mouseenter']() {
+          this.showPopover = true;
         },
+        ['@mouseleave']() {
+          this.showPopover = false;
+        },
+        ['@focus']() {
+          this.showPopover = true;
+        },
+        ['@blur']() {
+          this.showPopover = false;
+        },
+        ['@keyup.escape']() {
+          this.showPopover = false;
+        },
+      },
 
-        tabletInfoTriggerAttr: {
-          ['@click']() {
-            this.isInfoMode = !this.isInfoMode;
-          },
+      tabletInfoTriggerAttr: {
+        ['@click']() {
+          this.isInfoMode = !this.isInfoMode;
         },
-      } as CustomAlpineComponent<StatsItemComponent>;
-    });
+      },
+    } as CustomAlpineComponent<StatsItemComponent>;
   });
-}
+});
