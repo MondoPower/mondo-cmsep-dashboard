@@ -39,88 +39,90 @@ interface StatsComponent {
   initPolling(): void;
 }
 
-document.addEventListener('alpine:init', () => {
-  window.Alpine.data(COMPONENT_NAME, function () {
-    return {
-      // Setting defaults
-      townName: '',
-      lastUpdated: dayjs().tz().fromNow(),
+export function initStatsComponent() {
+  document.addEventListener('alpine:init', () => {
+    window.Alpine.data(COMPONENT_NAME, function () {
+      return {
+        // Setting defaults
+        townName: '',
+        lastUpdated: dayjs().tz().fromNow(),
 
-      numberOfSystems: '',
+        numberOfSystems: '',
 
-      isExporting: false,
-      isPreStormResilience: false,
-      isResilience: false,
+        isExporting: false,
+        isPreStormResilience: false,
+        isResilience: false,
 
-      gridExportCount: '',
+        gridExportCount: '',
 
-      isGridConnected: false,
-      isIslanded: false,
+        isGridConnected: false,
+        isIslanded: false,
 
-      solarGenerating: '',
-      solarCapacity: '',
-      solarGeneratingPercent: 0,
+        solarGenerating: '',
+        solarCapacity: '',
+        solarGeneratingPercent: 0,
 
-      batteryChargeState: '',
-      batteryCapacity: '',
-      batteryChargePercent: 0,
+        batteryChargeState: '',
+        batteryCapacity: '',
+        batteryChargePercent: 0,
 
-      isError: false,
+        isError: false,
 
-      init() {
-        this.queryData();
-        this.initPolling();
-      },
+        init() {
+          this.queryData();
+          this.initPolling();
+        },
 
-      async queryData() {
-        try {
-          const response = await fetch(DATA_ENDPOINT);
-          const data = (await response.json()) as APIResponse;
+        async queryData() {
+          try {
+            const response = await fetch(DATA_ENDPOINT);
+            const data = (await response.json()) as APIResponse;
 
-          this.isError = false;
+            this.isError = false;
 
-          console.debug('API Data fetched', data);
+            console.debug('API Data fetched', data);
 
-          this.townName = data.townName;
+            this.townName = data.townName;
 
-          this.lastUpdated = dayjs().tz().to(data.timestamp);
+            this.lastUpdated = dayjs().tz().to(data.timestamp);
 
-          this.numberOfSystems = data.numberOfSystems.toString();
+            this.numberOfSystems = data.numberOfSystems.toString();
 
-          this.isExporting = data.status === 'Exporting';
-          this.isPreStormResilience = data.status === 'Pre-event resilience mode – charging';
-          this.isResilience = data.status === 'Resilience mode – conserve energy';
+            this.isExporting = data.status === 'Exporting';
+            this.isPreStormResilience = data.status === 'Pre-event resilience mode – charging';
+            this.isResilience = data.status === 'Resilience mode – conserve energy';
 
-          this.gridExportCount = data.exportingToGrid.value + data.exportingToGrid.unit;
+            this.gridExportCount = data.exportingToGrid.value + data.exportingToGrid.unit;
 
-          this.isGridConnected = data.townSupplyStatus === 'Grid connected';
-          this.isIslanded = data.townSupplyStatus === 'Islanded';
+            this.isGridConnected = data.townSupplyStatus === 'Grid connected';
+            this.isIslanded = data.townSupplyStatus === 'Islanded';
 
-          this.solarGenerating = data.solar.generating.value + data.solar.generating.unit;
-          this.solarCapacity = data.solar.capacity.value + data.solar.capacity.unit;
-          this.solarGeneratingPercent =
-            (data.solar.generating.value / data.solar.capacity.value) * 100;
+            this.solarGenerating = data.solar.generating.value + data.solar.generating.unit;
+            this.solarCapacity = data.solar.capacity.value + data.solar.capacity.unit;
+            this.solarGeneratingPercent =
+              (data.solar.generating.value / data.solar.capacity.value) * 100;
 
-          this.batteryChargeState =
-            data.batteries.stateOfCharge.value + data.batteries.stateOfCharge.unit;
-          this.batteryCapacity = data.batteries.capacity.value + data.batteries.capacity.unit;
-          this.batteryChargePercent = data.batteries.stateOfCharge.value;
-        } catch (error) {
-          this.isError = true;
-          console.error('Error in fetching the data', error);
-        }
-      },
+            this.batteryChargeState =
+              data.batteries.stateOfCharge.value + data.batteries.stateOfCharge.unit;
+            this.batteryCapacity = data.batteries.capacity.value + data.batteries.capacity.unit;
+            this.batteryChargePercent = data.batteries.stateOfCharge.value;
+          } catch (error) {
+            this.isError = true;
+            console.error('Error in fetching the data', error);
+          }
+        },
 
-      initPolling() {
-        try {
-          setInterval(() => {
-            this.queryData();
-          }, POLL_TIME_MS);
-        } catch (error) {
-          this.isError = true;
-          console.error('Error in polling the data', error);
-        }
-      },
-    } as CustomAlpineComponent<StatsComponent>;
+        initPolling() {
+          try {
+            setInterval(() => {
+              this.queryData();
+            }, POLL_TIME_MS);
+          } catch (error) {
+            this.isError = true;
+            console.error('Error in polling the data', error);
+          }
+        },
+      } as CustomAlpineComponent<StatsComponent>;
+    });
   });
-});
+}
