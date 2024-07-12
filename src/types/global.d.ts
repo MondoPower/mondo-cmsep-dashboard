@@ -1,6 +1,6 @@
 import type { Webflow } from '@finsweet/ts-utils';
 
-export type SCRIPTS_ENV = 'dev' | 'prod';
+export type SCRIPTS_SOURCES = 'local' | 'cdn';
 
 declare global {
   const dayjs: typeof import('dayjs');
@@ -12,7 +12,7 @@ declare global {
     Webflow: Webflow;
 
     SCRIPTS_ENV: ENV;
-    setScriptsENV(env: ENV): void;
+    setScriptSource(env: ENV): void;
 
     PRODUCTION_BASE: string;
 
