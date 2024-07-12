@@ -20,7 +20,7 @@ In essence, it uses bun to start a development server on [localhost:3000](http:/
 
 ## Usage
 
-After repository migration, update the repo name and URL in this README file, and the `./bin/build.js`.
+After repository migration, update the repo name and URL in this README file, and the `./src/entry.ts`.
 
 ### Output
 
@@ -56,10 +56,11 @@ The project will process and output the files mentioned in the `files` const of 
    ```
 
 3. Whilst working locally, run `bun run dev` to start a development server on [localhost:3000](http://localhost:3000)
+   - Alternatively, `pnpm run dev` or `npm run dev`
 
-4. Execute `window.setScriptsENV('dev')` in the browser console to serve the file from localhost. If local server is not running, it will error out and automatically serve from production instead. This preference is saved in the browser's localstorage.
+4. Execute `window.setScriptSource('local')` in the browser console to serve the file from localhost. If local server is not running, it will error out and automatically serve from CDN instead. This preference is saved in the browser's localstorage.
 
-   - To switch back to production mode, execute `window.setScriptsENV('prod')` from console.
+   - To switch back to CDN serving mode, execute `window.setScriptSource('cdn')` from console.
 
 5. As changes are made to the code locally and saved, the [localhost:3000](http://localhost:3000) will then serve those files
 
@@ -82,13 +83,13 @@ You can use that as following:
 
 - Add any debug console logs in the code using the `console.debug` function instead of `console.log`. This way, they can be toggled on/off using the browser native "Verbose/Debug" level.
 
-### Production
+### Production CDN
 
 1. Run `bun run build` to generate the production files in `./dist/prod` folder
    - Alternatively, `pnpm run build` or `npm run build`
 
 2. To push code to production, merge the working branch into `main`. A Github Actions workflow will run tagging that version with an incremented [semver](https://semver.org/)) tag. Once pushed, the production code will be auto loaded from [jsDelivr CDN](https://www.jsdelivr.net/).
-   - By default, the version bump is a patch (`x.y.{{patch number}}`). To bump the version by a higher amount, mention a tag in the merge commit message, like `#major` or `#minor`
+   - By default, the version bump is a patch (`x.y.{{patch number}}`). To bump the version by a higher amount, mention a hashtag in the merge commit message, like `#major` or `#minor`
 
 3. To create separate environments for `dev` and `staging`, respective branches can be used, and the [jsDelivr file path can be set to load the latest scripts from those respective branches](https://www.jsdelivr.com/documentation#id-github). Note: The [caching for branches lasts 12 hours](https://www.jsdelivr.com/documentation#id-caching) and would hence require a manual purge.
    - To do so, override the `window.PRODUCTION_BASE` variable in the HTML file after the inclusion of `entry.js` script.

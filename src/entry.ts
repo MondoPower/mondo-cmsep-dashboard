@@ -4,11 +4,17 @@
  * Polls `localhost` on page load, else falls back to deriving code from production URL
  */
 import { SCRIPTS_LOADED_EVENT } from './constants';
-import './dev/env';
+import './dev/scripts-source';
 
 const LOCALHOST_BASE = 'http://localhost:3000/';
 window.PRODUCTION_BASE =
   'https://cdn.jsdelivr.net/gh/igniteagency/mondo-cmsep-dashboard/dist/prod/';
+
+/**
+ * NOTE: For multiple environments, can perhaps add separate production base URLs by matching the domain
+ * E.g: for UAT, can create a separate branch called `uat`, and the production base URL can look like - https://cdn.jsdelivr.net/gh/igniteagency/mondo-cmsep-dashboard@uat/dist/prod/entry.js
+ * Remember to purge the branch URL cache for all files to view the updated build code on live site
+ */
 
 window.JS_SCRIPTS = new Set();
 
@@ -18,20 +24,26 @@ const SCRIPT_LOAD_PROMISES: Array<Promise<unknown>> = [];
 window.addEventListener('DOMContentLoaded', addJS);
 
 /**
- * Sets an object `window.isLocal` and adds all the set scripts using the `window.JS_SCRIPTS` Set
+ * Adds all the set scripts to the `window.JS_SCRIPTS` Set
  */
 function addJS() {
-  console.log(`Current script mode: ${window.SCRIPTS_ENV}`);
+  console.debug(`Current script mode: ${window.SCRIPTS_ENV}`);
 
-  if (window.SCRIPTS_ENV === 'dev') {
+  if (window.SCRIPTS_ENV === 'local') {
+    console.debug(
+      "To run JS scripts from production CDN, execute `window.setScriptSource('cdn')` in the browser console"
+    );
     fetchLocalScripts();
   } else {
+    console.debug(
+      "To run JS scripts from localhost, execute `window.setScriptSource('local')` in the browser console"
+    );
     appendScripts();
   }
 }
 
 function appendScripts() {
-  const BASE = window.SCRIPTS_ENV === 'dev' ? LOCALHOST_BASE : window.PRODUCTION_BASE;
+  const BASE = window.SCRIPTS_ENV === 'local' ? LOCALHOST_BASE : window.PRODUCTION_BASE;
 
   window.JS_SCRIPTS?.forEach((url) => {
     const script = document.createElement('script');
@@ -53,7 +65,10 @@ function appendScripts() {
 
   Promise.allSettled(SCRIPT_LOAD_PROMISES).then(() => {
     console.debug('All scripts loaded');
-    window.dispatchEvent(new CustomEvent(SCRIPTS_LOADED_EVENT));
+    // Add a small delay to ensure all scripts have had a chance to execute
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent(SCRIPTS_LOADED_EVENT));
+    }, 50);
   });
 }
 
@@ -74,7 +89,7 @@ function fetchLocalScripts() {
     })
     .catch(() => {
       console.error('localhost not resolved. Switching to production');
-      window.setScriptsENV('prod');
+      window.setScriptSource('cdn');
     })
     .finally(() => {
       clearTimeout(localhostFetchTimeout);
