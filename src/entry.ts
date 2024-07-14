@@ -7,12 +7,11 @@ import { SCRIPTS_LOADED_EVENT } from './constants';
 import './dev/scripts-source';
 
 const LOCALHOST_BASE = 'http://localhost:3000/';
-window.PRODUCTION_BASE =
-  'https://cdn.jsdelivr.net/gh/igniteagency/mondo-cmsep-dashboard/dist/prod/';
+window.PRODUCTION_BASE = 'https://cdn.jsdelivr.net/gh/MondoPower/mondo-cmsep-dashboard/dist/prod/';
 
 /**
  * NOTE: For multiple environments, can perhaps add separate production base URLs by matching the domain
- * E.g: for UAT, can create a separate branch called `uat`, and the production base URL can look like - https://cdn.jsdelivr.net/gh/igniteagency/mondo-cmsep-dashboard@uat/dist/prod/entry.js
+ * E.g: for UAT, can create a separate branch called `uat`, and the production base URL can look like - https://cdn.jsdelivr.net/gh/MondoPower/mondo-cmsep-dashboard@uat/dist/prod/entry.js
  * Remember to purge the branch URL cache for all files to view the updated build code on live site
  */
 
